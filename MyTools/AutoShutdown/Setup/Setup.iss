@@ -40,6 +40,8 @@ SetupIconFile=..\bin\Debug\Resources\Icon\Strawberry.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+WizardImageFile=..\bin\Debug\Resources\Bmp\Left.bmp 
+
 ;设置控制面板中程序图标
 UninstallDisplayIcon={app}\Resources\Icon\Strawberry.ico 
 ;设置控制面板中程序的名称
@@ -64,6 +66,43 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "..\bin\Debug\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "NDP472-KB4054530-x86-x64-AllOS-ENU.exe"; DestDir: "{tmp}"; Flags: ignoreversion
+
+[Code]
+//程序启动函数
+function InitializeSetup(): Boolean;
+  var ResultCode: Integer;
+  begin
+  //判断是否安装了NETFramework4.7.2  大家注意，正确是SOFTWARE\\Microsoft\\.NETFramework\\v4.0.30319\\SKUs\\.NETFramework,Version=v4.7.2
+  if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\.NETFramework\v4.0.30319\SKUs\.NETFramework,Version=v4.7.2') then
+    begin
+    //返回值 继续执行
+    //MsgBox('系统检测到您已安装.Net Framework4.7.2运行环境', mbConfirmation, MB_OK)
+    Result :=true;
+    end
+  else
+    //若用户没有安装
+    begin
+    //弹出一个对话框
+    if MsgBox('系统检测到您没有安装.Net Framework4.7.2运行环境，是否立即安装？', mbConfirmation, MB_YESNO) = idYes then
+      begin
+        //要把.net安装包，从我们的安装包中取出来，放到系统的临时文件夹中
+        ExtractTemporaryFile('NDP472-KB4054530-x86-x64-AllOS-ENU.exe');
+  
+        //我们再运行这个安装包(运行1个.exe文件)
+        Exec(ExpandConstant('{tmp}\NDP472-KB4054530-x86-x64-AllOS-ENU.exe'), '', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+
+        //返回值 继续执行
+        Result :=true;
+      end
+    else 
+      begin
+        MsgBox('未能成功安装.Net Framework4.7.2运行环境，系统将无法运行，本安装程序即将退出！',mbInformation,MB_OK);
+        Result := false;
+      end
+  end;
+  
+end;
 
 [Registry]
 Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
