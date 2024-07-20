@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using AutoShutdown.Contents;
 
 namespace AutoShutdown
 {
@@ -12,6 +13,27 @@ namespace AutoShutdown
             InitializeComponent();
 
             DataContext = new MainVm();
+        }
+
+        private void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DataContext is MainVm vm)
+            {
+                if (vm.Content is RunningContent runningContent)
+                {
+                    var choice = MessageBox.Show("关闭软件会使定时失效，确定要关闭吗？", "提示", MessageBoxButton.OKCancel,
+                        MessageBoxImage.Information);
+                    if (choice == MessageBoxResult.OK)
+                    {
+                        runningContent.Stop();
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                    }
+                }
+            }
+
         }
     }
 }
