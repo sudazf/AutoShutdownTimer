@@ -41,6 +41,7 @@ namespace AutoShutdown.Contents
         {
             _seconds = minutes * 60;
             _secondsTotal = _seconds;
+            _display = $"{minutes}分00秒";
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
