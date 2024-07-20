@@ -35,7 +35,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename={#MyAppName} {#MyAppVersion}
+OutputBaseFilename={#MyAppName} {#MyAppVersion} Installer
 SetupIconFile=..\bin\Debug\Resources\Icon\Strawberry.ico 
 Compression=lzma
 SolidCompression=yes
