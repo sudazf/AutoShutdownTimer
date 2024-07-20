@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/MyTools/AutoShutdown/Setup/Output/自动关机小工具 1.0.0.0.exe
