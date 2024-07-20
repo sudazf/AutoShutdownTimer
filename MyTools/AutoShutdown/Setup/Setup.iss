@@ -38,7 +38,7 @@ PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename={#MyAppName} {#MyAppVersion} Installer
 SetupIconFile=..\bin\Debug\Resources\Icon\Strawberry.ico 
 Compression=zip
-SolidCompression=yes
+;SolidCompression=yes
 WizardStyle=modern
 WizardImageFile=..\bin\Debug\Resources\Bmp\Left.bmp 
 
