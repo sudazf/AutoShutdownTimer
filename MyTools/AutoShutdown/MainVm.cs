@@ -12,7 +12,6 @@ namespace AutoShutdown
 {
     public class MainVm : ViewModelBase
     {
-        private string _time;
         private int _minutes;
         private IContent _content;
         private bool _canChangeTime;
@@ -24,20 +23,16 @@ namespace AutoShutdown
             {
                 if (value == _minutes) return;
                 _minutes = value;
-                Time = _minutes.ToString();
+
+                if (_content is NormalContent normalContent)
+                {
+                    normalContent.TimeCounter = _minutes.ToString();
+                }
+
                 RaisePropertyChanged(nameof(Minutes));
             }
         }
-        public string Time
-        {
-            get => _time;
-            set
-            {
-                if (value == _time) return;
-                _time = value;
-                RaisePropertyChanged(nameof(Time));
-            }
-        }
+  
         public bool CanChangeTime
         {
             get => _canChangeTime;
@@ -66,8 +61,8 @@ namespace AutoShutdown
         {
             _minutes = 15;
             _canChangeTime = true;
-            _time = _minutes.ToString();
-            _content = new NormalContent();
+            _content = new NormalContent(_minutes);
+
             ShutdownCommand = new JCommand("ShutdownCommandId", OnShutdown, CanShutdown);
         }
 
@@ -85,7 +80,7 @@ namespace AutoShutdown
                     runningContent.Stop();
                 }
 
-                Content = new NormalContent();
+                Content = new NormalContent(_minutes);
                 CanChangeTime = true;
             }
         }

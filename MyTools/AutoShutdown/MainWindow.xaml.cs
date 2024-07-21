@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
 using AutoShutdown.Contents;
 
 namespace AutoShutdown
@@ -34,6 +35,32 @@ namespace AutoShutdown
                 }
             }
 
+        }
+
+        private void OnWindowMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            if (DataContext is MainVm vm)
+            {
+                if (vm.Content is NormalContent)
+                {
+                    int deltaMinute;
+                    if (e.Delta > 0)
+                    {
+                        deltaMinute = 1;
+                    }
+                    else
+                    {
+                        deltaMinute = -1;
+                    }
+
+                    var finalMinute = vm.Minutes + deltaMinute;
+
+                    if (finalMinute >= 1 && finalMinute <= 60)
+                    {
+                        vm.Minutes = finalMinute;
+                    }
+                }
+            }
         }
     }
 }

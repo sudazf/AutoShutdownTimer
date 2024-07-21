@@ -11,17 +11,19 @@ namespace AutoShutdown.Contents
         private readonly int _secondsTotal;
 
         private int _seconds;
-        private string _display;
         private int _shutdownProgress;
+        private string _timeCounter;
 
-        public string Display
+        public string Display => "取消关机";
+
+        public string TimeCounter
         {
-            get => _display;
+            get => _timeCounter;
             set
             {
-                if (value == _display) return;
-                _display = value;
-                RaisePropertyChanged(nameof(Display));
+                if (value == _timeCounter) return;
+                _timeCounter = value;
+                RaisePropertyChanged(nameof(TimeCounter));
             }
         }
 
@@ -41,7 +43,7 @@ namespace AutoShutdown.Contents
         {
             _seconds = minutes * 60;
             _secondsTotal = _seconds;
-            _display = $"{minutes}分00秒";
+            _timeCounter = $"{minutes}分00秒";
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
@@ -62,7 +64,7 @@ namespace AutoShutdown.Contents
             var minutes = _seconds / 60;
             var seconds = _seconds % 60;
 
-            Display = $"{minutes}分{seconds}秒";
+            TimeCounter = $"{minutes}分{seconds}秒";
 
             ShutdownProgress = (int)((1 - Math.Round(((double)_seconds /_secondsTotal), 2)) * 100);
 

@@ -14,6 +14,7 @@
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
+    MouseWheel="OnWindowMouseWheel"
     Closing="OnWindowClosing"
     mc:Ignorable="d">
 
@@ -21,27 +22,19 @@
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type contents:NormalContent}">
                 <TextBlock
-                    FontSize="28"
-                    Foreground="Black"
-                    Text="{Binding Display}" />
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="48"
+                    Text="{Binding TimeCounter, StringFormat={}{0}分钟}" />
             </DataTemplate>
             <DataTemplate DataType="{x:Type contents:RunningContent}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        Text="剩余" />
-                    <TextBlock
-                        Grid.Row="1"
-                        FontSize="20"
-                        Foreground="#e65100    "
-                        Text="{Binding Display}" />
-                </Grid>
+                <TextBlock
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="48"
+                    Text="{Binding TimeCounter, StringFormat={}{0}}" />
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
@@ -51,13 +44,18 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Slider
-            Margin="32,16,4,16"
-            Maximum="60"
-            Minimum="1"
-            Orientation="Vertical"
-            IsEnabled="{Binding CanChangeTime}"
-            Value="{Binding Minutes}" />
+        <Grid>
+            <Grid.LayoutTransform>
+                <ScaleTransform ScaleX="1.5" ScaleY="1.5"></ScaleTransform>
+            </Grid.LayoutTransform>
+            <Slider
+                Margin="32,16,4,16"
+                Maximum="60"
+                Minimum="1"
+                Orientation="Vertical"
+                IsEnabled="{Binding CanChangeTime}"
+                Value="{Binding Minutes}" />
+        </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -69,12 +67,9 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock
-                    Margin="4"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="48"
-                    Text="{Binding Time, StringFormat={}{0}分钟}" />
+
+                <ContentControl Content="{Binding Content}" />
+                
                 <TextBlock
                     Grid.Row="1"
                     HorizontalAlignment="Center"
@@ -85,9 +80,10 @@
             </Grid>
 
             <Grid Grid.Row="1">
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleX="3" ScaleY="3"></ScaleTransform>
+                </Grid.LayoutTransform>
                 <Button
-                    Width="160"
-                    Height="160"
                     Margin="8"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
@@ -98,7 +94,7 @@
                     Background="#81d4fa"
                     BorderBrush="#81d4fa"
                     Command="{Binding ShutdownCommand}"
-                    Content="{Binding Content}"
+                    Content="{Binding Content.Display}"
                     FocusVisualStyle="{x:Null}"
                     Style="{StaticResource MaterialDesignFloatingActionButton}" />
             </Grid>
