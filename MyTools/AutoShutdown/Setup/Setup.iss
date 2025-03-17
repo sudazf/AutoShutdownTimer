@@ -66,7 +66,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "..\bin\Debug\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: "NDP472-KB4054530-x86-x64-AllOS-ENU.exe"; DestDir: "{tmp}"; Flags: ignoreversion
 
 [Code]
 //程序启动函数
